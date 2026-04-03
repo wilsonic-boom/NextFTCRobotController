@@ -8,8 +8,8 @@ import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.delays.Delay;
-import org.firstinspires.ftc.teamcode.mySystems.Lift;
-import org.firstinspires.ftc.teamcode.mySystems.Claw;
+import org.firstinspires.ftc.teamcode.RobotSystems.Lift;
+import org.firstinspires.ftc.teamcode.RobotSystems.Claw;
 
 @Autonomous(name = "visionAprilTags")
 public class visionAprilTags extends NextFTCOpMode {
