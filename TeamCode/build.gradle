@@ -13,16 +13,20 @@
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
-apply from: '../build.dependencies.gradle'
+        apply from: '../build.dependencies.gradle'
 
-android {
-    namespace = 'org.firstinspires.ftc.teamcode'
+        android {
+            namespace = 'org.firstinspires.ftc.teamcode'
 
-    packagingOptions {
+            packagingOptions {
         jniLibs.useLegacyPackaging true
     }
 }
 
 dependencies {
     implementation project(':FtcRobotController')
+    implementation 'dev.nextftc:ftc:1.1.0'
+    implementation 'dev.nextftc:hardware:1.1.0' // If you would like to use the hardware module
+    implementation 'dev.nextftc:control:1.0.0'
+    implementation 'dev.nextftc.extensions:pedro:1.0.0'
 }
