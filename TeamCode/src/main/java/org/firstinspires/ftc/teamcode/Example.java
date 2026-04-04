@@ -11,7 +11,7 @@ import dev.nextftc.core.commands.delays.Delay;
 import org.firstinspires.ftc.teamcode.RobotSystems.Lift;
 import org.firstinspires.ftc.teamcode.RobotSystems.Claw;
 
-@Autonomous(name = "visionAprilTags")
+@Autonomous(name = "Example")
 public class Example extends NextFTCOpMode {
     public Example() {
         addComponents(
