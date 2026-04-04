@@ -67,7 +67,7 @@ public class Shooter implements Subsystem {
                     targetVelocity = calcVelocity(x, y);
                     targetHoodPos  = calcHoodPosition(x, y);
                 })
-                .setIsDone(() -> true) // instant — periodic() keeps driving the hardware
+                .setIsDone(() -> true)
                 .requires(this);
     }
 
