@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.RobotSystems.Lift;
 import org.firstinspires.ftc.teamcode.RobotSystems.Claw;
 
 @Autonomous(name = "visionAprilTags")
-public class visionAprilTags extends NextFTCOpMode {
-    public visionAprilTags() {
+public class Example extends NextFTCOpMode {
+    public Example() {
         addComponents(
                 new SubsystemComponent(Lift.INSTANCE, Claw.INSTANCE),
                 BulkReadComponent.INSTANCE
