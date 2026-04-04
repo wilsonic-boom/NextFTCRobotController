@@ -7,7 +7,7 @@ import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
 
 public class Lift implements Subsystem {
-    public static final org.firstinspires.ftc.teamcode.Lift INSTANCE = new org.firstinspires.ftc.teamcode.Lift();
+    public static final org.firstinspires.ftc.teamcode.RobotSystems.Lift INSTANCE = new org.firstinspires.ftc.teamcode.Lift();
     private Lift() { }
 
     private MotorEx motor = new MotorEx("lift_motor");

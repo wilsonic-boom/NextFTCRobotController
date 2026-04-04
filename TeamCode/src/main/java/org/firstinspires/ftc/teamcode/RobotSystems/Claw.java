@@ -6,7 +6,7 @@ import dev.nextftc.hardware.impl.ServoEx;
 import dev.nextftc.hardware.positionable.SetPosition;
 
 public class Claw implements Subsystem {
-    public static final org.firstinspires.ftc.teamcode.Claw INSTANCE = new org.firstinspires.ftc.teamcode.Claw();
+    public static final org.firstinspires.ftc.teamcode.RobotSystems.Claw INSTANCE = new org.firstinspires.ftc.teamcode.Claw();
     private Claw() { }
 
     private ServoEx servo = new ServoEx("claw_servo");
