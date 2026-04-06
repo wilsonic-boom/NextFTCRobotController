@@ -13,6 +13,7 @@ import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+// this is bottom left starting position auto code, i can create bottom right for the other alliance by mirroring coords this needs testing tho only has the paths
 @Autonomous(name = "Pedro Pathing Autonomous", group = "Autonomous")
 @Configurable // Panels
 public class pedroAuto extends OpMode {
