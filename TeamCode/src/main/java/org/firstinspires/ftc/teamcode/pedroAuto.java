@@ -10,8 +10,9 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.geometry.Pose;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 // this is bottom left starting position auto code, i can create bottom right for the other alliance by mirroring coords this needs testing tho only has the paths
 @Autonomous(name = "Pedro Pathing Autonomous", group = "Autonomous")
@@ -21,12 +22,12 @@ public class pedroAuto extends OpMode {
     public Follower follower; // Pedro Pathing follower instance
     private int pathState; // Current autonomous path state (state machine)
     private Paths paths; // Paths defined in the Paths class
-    private DcMotor shooter;
+    private DcMotorEx shooter;
     private ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void init() {
-        shooter = hardwareMap.get(DcMotor.class, "Shooter");
+        shooter = hardwareMap.get(DcMotorEx.class, "Shooter");
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
         follower = Constants.createFollower(hardwareMap);
@@ -135,7 +136,7 @@ public class pedroAuto extends OpMode {
             pathState = 1;
         }
         else if (pathState == 1 && !follower.isBusy()) {
-            shooter.setPower(1.0); // here set correct shooter power and hood servo
+            shooter.setVelocity(825); // here set correct shooter power and hood servo
             timer.reset();
             pathState = 2;
         }
@@ -145,7 +146,7 @@ public class pedroAuto extends OpMode {
             pathState = 3;
         }
         else if (pathState == 3 && !follower.isBusy()) {
-            shooter.setPower(1.0);  // here set correct shooter power and hood servo
+            shooter.setVelocity(1262);  // here set correct shooter power and hood servo
             timer.reset();
             pathState = 4;
         }
@@ -155,7 +156,7 @@ public class pedroAuto extends OpMode {
             pathState = 5;
         }
         else if (pathState == 5 && !follower.isBusy()) {
-            shooter.setPower(1.0);  // here set correct shooter power and hood servo
+            shooter.setVelocity(1585);  // here set correct shooter power and hood servo
             timer.reset();
             pathState = 6;
         }
