@@ -141,7 +141,7 @@ public class pedroAuto extends OpMode {
             pathState = 2;
         }
         else if (pathState == 2 && timer.seconds() > 1) {
-            shooter.setPower(0);
+            shooter.setVelocity(0);
             follower.followPath(paths.two);
             pathState = 3;
         }
@@ -151,7 +151,7 @@ public class pedroAuto extends OpMode {
             pathState = 4;
         }
         else if (pathState == 4 && timer.seconds() > 1) {
-            shooter.setPower(0);
+            shooter.setVelocity(0);
             follower.followPath(paths.three);
             pathState = 5;
         }
@@ -161,7 +161,7 @@ public class pedroAuto extends OpMode {
             pathState = 6;
         }
         else if (pathState == 6 && timer.seconds() > 1) {
-            shooter.setPower(0);
+            shooter.setVelocity(0);
             pathState = 7;
         }
 
