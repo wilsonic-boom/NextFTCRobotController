@@ -25,6 +25,11 @@ public class pedroAuto extends OpMode {
     private DcMotorEx shooter;
     private ElapsedTime timer = new ElapsedTime();
 
+    // example how to use for it
+    ShooterCalc DataCalc = new ShooterCalc();
+    double velocity = DataCalc.lookup(90, "Velocity");
+    double hoodPos  = DataCalc.lookup(90, "HoodServoPos");
+
     @Override
     public void init() {
         shooter = hardwareMap.get(DcMotorEx.class, "Shooter");
