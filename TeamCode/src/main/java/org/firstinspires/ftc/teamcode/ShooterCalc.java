@@ -39,7 +39,12 @@ public class ShooterCalc {
                     + ". Available: " + colIndex.keySet());
         }
         double[][] coeffs = splineCache.computeIfAbsent(key, this::buildSpline);
-        return evaluate(coeffs, xQuery);
+        double result = evaluate(coeffs, xQuery);
+        if (key.equals("hoodservopos")) {
+            return Math.min(1.0, Math.max(0.0, result));
+        } else {
+            return Math.max(0.0, result);
+        }
     }
 
     // some online algoithim or something
