@@ -21,6 +21,22 @@ public class ShooterCalc {
 
     private final double[] xs;
 
+    private static double distanceMultiplier = 1.0;
+    private static final double MULTIPLIER_STEP = 0.02;
+
+    public static void adjustDistance(String direction) {
+        if (direction.equalsIgnoreCase("tooClose")) {
+            distanceMultiplier += MULTIPLIER_STEP;
+        } else if (direction.equalsIgnoreCase("tooFar")) {
+            distanceMultiplier -= MULTIPLIER_STEP;
+        }
+    }
+
+    public static void resetDistanceMultiplier() {
+        distanceMultiplier = 1.0;
+    }
+
+
     public ShooterCalc() {
         for (int i = 0; i < COLUMNS.length; i++) {
             colIndex.put(COLUMNS[i].toLowerCase(), i);
@@ -39,7 +55,7 @@ public class ShooterCalc {
                     + ". Available: " + colIndex.keySet());
         }
         double[][] coeffs = splineCache.computeIfAbsent(key, this::buildSpline);
-        double result = evaluate(coeffs, xQuery);
+        double result = evaluate(coeffs, xQuery * distanceMultiplier);
         if (key.equals("hoodservopos")) {
             return Math.min(1.0, Math.max(0.0, result));
         } else {

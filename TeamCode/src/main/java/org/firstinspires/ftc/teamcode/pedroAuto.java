@@ -12,7 +12,10 @@ import com.pedropathing.paths.PathChain;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.ShooterCalc;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import java.util.Date;
 
 // this is bottom left starting position auto code, i can create bottom right for the other alliance by mirroring coords this needs testing tho only has the paths
 @Autonomous(name = "Pedro Pathing Autonomous", group = "Autonomous")
@@ -24,11 +27,6 @@ public class pedroAuto extends OpMode {
     private Paths paths; // Paths defined in the Paths class
     private DcMotorEx shooter;
     private ElapsedTime timer = new ElapsedTime();
-
-    // example how to use for it
-    ShooterCalc DataCalc = new ShooterCalc();
-    double velocity = DataCalc.lookup(90, "Velocity");
-    double hoodPos  = DataCalc.lookup(90, "HoodServoPos");
 
     @Override
     public void init() {
@@ -42,6 +40,14 @@ public class pedroAuto extends OpMode {
 
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
+
+        // example how to use for it
+        ShooterCalc DataCalc = new ShooterCalc();
+        double velocity = DataCalc.lookup(90, "Velocity");
+        double hoodPos  = DataCalc.lookup(90, "HoodServoPos");
+        // if u have controls for this then:
+        ShooterCalc.adjustDistance("tooClose"); // click a button if the ball misses cuz its too close
+        ShooterCalc.adjustDistance("tooFar"); // click a button if the ball goes too far
     }
 
     @Override
