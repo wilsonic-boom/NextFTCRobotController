@@ -17,7 +17,7 @@ public class LimelightPositionTest extends OpMode {
 
     @Override
     public void init() {
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight = hardwareMap.get(Limelight3A.class, "Limelight");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
