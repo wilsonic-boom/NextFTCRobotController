@@ -17,7 +17,7 @@ public class LimelightPositionTest extends OpMode {
 
     @Override
     public void init() {
-        limelight = hardwareMap.get(Limelight3A.class, "Limelight");
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
@@ -32,15 +32,32 @@ public class LimelightPositionTest extends OpMode {
     public void loop() {
         LLResult result = limelight.getLatestResult();
 
-        if (result == null || !result.isValid()) {
-            telemetry.addLine("No AprilTag seen");
+        if (result == null) {
+            telemetry.addLine("Result: NULL — Limelight not responding");
+            telemetry.update();
+            return;
+        }
+
+        telemetry.addData("Result valid", result.isValid());
+        telemetry.addData("Pipeline",     result.getPipelineIndex());
+
+        if (!result.isValid()) {
+            telemetry.addLine("Result: invalid");
             telemetry.update();
             return;
         }
 
         List<LLResultTypes.FiducialResult> fiducials = result.getFiducialResults();
 
-        if (fiducials == null || fiducials.isEmpty()) {
+        if (fiducials == null) {
+            telemetry.addLine("Fiducials: NULL list");
+            telemetry.update();
+            return;
+        }
+
+        telemetry.addData("Fiducials found", fiducials.size());
+
+        if (fiducials.isEmpty()) {
             telemetry.addLine("No AprilTag seen");
             telemetry.update();
             return;
@@ -48,17 +65,23 @@ public class LimelightPositionTest extends OpMode {
 
         for (LLResultTypes.FiducialResult tag : fiducials) {
             Pose3D fieldPose = tag.getRobotPoseFieldSpace();
-            if (fieldPose == null) continue;
+
+            telemetry.addLine("───────────────────");
+            telemetry.addData("Tag ID",      tag.getFiducialId());
+            telemetry.addData("Target area", String.format("%.4f", tag.getTargetArea()));
+
+            if (fieldPose == null) {
+                telemetry.addLine("Pose: NULL — tag seen but no pose");
+                continue;
+            }
 
             double x       = fieldPose.getPosition().x;
             double y       = fieldPose.getPosition().y;
             double heading = fieldPose.getOrientation().getYaw(AngleUnit.DEGREES);
 
-            telemetry.addData("Tag ID", tag.getFiducialId());
             telemetry.addData("X",       String.format("%.2f\"", x));
             telemetry.addData("Y",       String.format("%.2f\"", y));
             telemetry.addData("Heading", String.format("%.2f°", heading));
-            telemetry.addLine("───────────────────");
         }
 
         telemetry.update();
