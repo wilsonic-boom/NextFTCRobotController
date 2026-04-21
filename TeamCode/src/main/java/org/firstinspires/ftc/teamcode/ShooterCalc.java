@@ -5,37 +5,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShooterCalc {
+
     private static final String[] COLUMNS = {"Distance", "Velocity", "HoodServoPos"};
 
     private static final double[][] TABLE = {
-            // Distance Velocity HoodServoPos
-            {93, 1460, 0.19},
-            {76, 1360, 0.17},
-            {59, 1200, 0.12},
-            {25, 1080, 0},
-            {142, 1640, 0.17},
+            // Distance  Velocity  HoodServoPos
+            {42.4, 900, 0},
+            {59.4, 900, 0.08},
+            {76.4, 1000, 0.11},
+            {93.3, 1100, 0.12},
+            {115.4, 1300, 0.02},
+            {131.7, 1300, 0.02},
     };
 
     private final Map<String, Integer> colIndex = new HashMap<>();
     private final Map<String, double[][]> splineCache = new HashMap<>();
-
     private final double[] xs;
 
     private static double distanceMultiplier = 1.0;
     private static final double MULTIPLIER_STEP = 0.02;
-
-    public static void adjustDistance(String direction) {
-        if (direction.equalsIgnoreCase("tooClose")) {
-            distanceMultiplier += MULTIPLIER_STEP;
-        } else if (direction.equalsIgnoreCase("tooFar")) {
-            distanceMultiplier -= MULTIPLIER_STEP;
-        }
-    }
-
-    public static void resetDistanceMultiplier() {
-        distanceMultiplier = 1.0;
-    }
-
+    private boolean useLinear = true;
 
     public ShooterCalc() {
         for (int i = 0; i < COLUMNS.length; i++) {
@@ -48,14 +37,42 @@ public class ShooterCalc {
         for (int i = 0; i < TABLE.length; i++) xs[i] = TABLE[i][0];
     }
 
+    public void setLinear(boolean linear) {
+        useLinear = linear;
+    }
+
+    public static void adjustDistance(String direction) {
+        if (direction.equalsIgnoreCase("higher") || direction.equalsIgnoreCase("tooFar")) {
+            distanceMultiplier += MULTIPLIER_STEP;
+        } else if (direction.equalsIgnoreCase("lower") || direction.equalsIgnoreCase("tooClose")) {
+            distanceMultiplier -= MULTIPLIER_STEP;
+        }
+    }
+
+    public static void resetDistanceMultiplier() {
+        distanceMultiplier = 1.0;
+    }
+
     public double lookup(double xQuery, String column) {
         String key = column.toLowerCase();
         if (!colIndex.containsKey(key)) {
             throw new IllegalArgumentException("Unknown column: " + column
                     + ". Available: " + colIndex.keySet());
         }
-        double[][] coeffs = splineCache.computeIfAbsent(key, this::buildSpline);
-        double result = evaluate(coeffs, xQuery * distanceMultiplier);
+
+        double adjustedX = xQuery * distanceMultiplier;
+        double result;
+
+        if (useLinear) {
+            int colIdx = colIndex.get(key);
+            double[] y = new double[TABLE.length];
+            for (int i = 0; i < TABLE.length; i++) y[i] = TABLE[i][colIdx];
+            result = evaluateLinear(y, adjustedX);
+        } else {
+            double[][] coeffs = splineCache.computeIfAbsent(key, this::buildSpline);
+            result = evaluate(coeffs, adjustedX);
+        }
+
         if (key.equals("hoodservopos")) {
             return Math.min(1.0, Math.max(0.0, result));
         } else {
@@ -63,7 +80,17 @@ public class ShooterCalc {
         }
     }
 
-    // some online algoithim or something
+    private double evaluateLinear(double[] y, double xQuery) {
+        int n = xs.length;
+        int seg = n - 2;
+        for (int i = 0; i < n - 1; i++) {
+            if (xQuery <= xs[i + 1]) { seg = i; break; }
+        }
+        if (xQuery < xs[0]) seg = 0;
+        double t = (xQuery - xs[seg]) / (xs[seg + 1] - xs[seg]);
+        return y[seg] + t * (y[seg + 1] - y[seg]);
+    }
+
     private double[][] buildSpline(String colKey) {
         int colIdx = colIndex.get(colKey);
         int n = TABLE.length;
@@ -122,7 +149,7 @@ public class ShooterCalc {
     }
 
     public static void main(String[] args) {
-        ShooterCalc si = new ShooterCalc ();
+        ShooterCalc si = new ShooterCalc();
 
         double[] testX = {25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 110, 120, 130, 140, 150};
 
